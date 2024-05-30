@@ -13,3 +13,13 @@
 ![Catalog microservice](../../img/logical-catalog-microservice.png)
 
 - Page 118 on the e-book.
+
+## Notes
+
+I'll just be copying the code from the tutorial and refactoring it after I get it working. 
+
+Refactoring ideas:
+
+- [ ] Split this up into different projects rather than keeping everything inside `Catalog.Api`.
+- [ ] Rename `Catalog.Api` -> `Catalog.Web.Api`.
+- [x] Remove usage of [`CatalogDomainException`](https://github.com/dotnet-architecture/eShopOnContainers/blob/8438a6a652ce7db4e271e7cd47071fc4d58fdb8c/src/Services/Catalog/Catalog.API/Infrastructure/Exceptions/CatalogDomainException.cs) and use built-in exceptions. Only affects [`CatalogItem`](https://github.com/dotnet-architecture/eShopOnContainers/blob/8438a6a652ce7db4e271e7cd47071fc4d58fdb8c/src/Services/Catalog/Catalog.API/Model/CatalogItem.cs#L59).
