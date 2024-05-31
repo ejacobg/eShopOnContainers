@@ -1,5 +1,10 @@
-﻿namespace Catalog.Api.Model;
+﻿using Catalog.Api.Models.Configurations;
 
+using Microsoft.EntityFrameworkCore;
+
+namespace Catalog.Api.Models;
+
+[EntityTypeConfiguration(typeof(CatalogItemConfiguration))]
 public class CatalogItem
 {
     public int Id { get; set; }
