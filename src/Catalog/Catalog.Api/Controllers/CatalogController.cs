@@ -261,6 +261,8 @@ public class CatalogController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<ActionResult> CreateProductAsync([FromBody] CatalogItem product)
     {
+        // We make a copy here to allow EF core to generate the new ID, as well as to protect ourselves in case other pieces of code touch the `product` item after us.
+        // Adding an entity to the context automatically enables tracking; by creating our own private copy here, we can ensure that only this code has access to the entity.
         var item = new CatalogItem
         {
             CatalogBrandId = product.CatalogBrandId,
