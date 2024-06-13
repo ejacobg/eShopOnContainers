@@ -1,5 +1,9 @@
-﻿using Catalog.Api.Infrastructure;
+﻿using Catalog.Api.Extensions;
+using Catalog.Api.Infrastructure;
+using Catalog.Api.IntegrationEvents;
+using Catalog.Api.IntegrationEvents.Events;
 using Catalog.Api.Models;
+using Catalog.Api.ViewModels;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +34,10 @@ public class CatalogController : ControllerBase
     [ProducesResponseType(typeof(PaginatedItemsViewModel<CatalogItem>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(IEnumerable<CatalogItem>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> ItemsAsync([FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0, string ids = null)
+    public async Task<IActionResult> ItemsAsync(
+        [FromQuery] int pageSize = 10, 
+        [FromQuery] int pageIndex = 0, 
+        [FromQuery] string ids = null) // The original code omits the [FromQuery] attribute, although it technically isn't needed since the query string will be searched anyway.
     {
         if (!string.IsNullOrEmpty(ids))
         {
@@ -231,7 +238,7 @@ public class CatalogController : ControllerBase
 
         if (raiseProductPriceChangedEvent) // Save product's data and publish integration event through the Event Bus if price has changed
         {
-            //Create Integration Event to be published through the Event Bus
+            // Create Integration Event to be published through the Event Bus
             var priceChangedEvent = new ProductPriceChangedIntegrationEvent(catalogItem.Id, productToUpdate.Price, oldPrice);
 
             // Achieving atomicity between original Catalog database operation and the IntegrationEventLog thanks to a local transaction
