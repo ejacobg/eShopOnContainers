@@ -10,6 +10,11 @@ The e-book only goes over the event bus at a very high level.
 
 A lot of this stuff is above my pay grade right now, and isn't really production-ready in the first place. I might do some research for better alternatives for the code here, but that's for a later time.
 
+### Notes
+
+- Using `IServiceScopeFactory` instead of `ILifetimeScope` inside `EventBusServiceBus`.
+- Rename `IServiceBusPersisterConnection` -> `IServiceBusPersistentConnection`.
+
 ### To-Do
 
 - [ ] Deep dive into how this all works.

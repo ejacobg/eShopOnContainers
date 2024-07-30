@@ -24,6 +24,8 @@ using Microsoft.OpenApi.Models;
 
 using RabbitMQ.Client;
 
+using ServiceBus;
+
 namespace Catalog.Api;
 
 public class Startup(IConfiguration configuration)
@@ -259,12 +261,12 @@ public static class CustomExtensionMethods
 
         if (configuration.GetValue<bool>("AzureServiceBusEnabled"))
         {
-            services.AddSingleton<IServiceBusPersisterConnection>(sp =>
+            services.AddSingleton<IServiceBusPersistentConnection>(sp =>
             {
                 var settings = sp.GetRequiredService<IOptions<CatalogSettings>>().Value;
                 var serviceBusConnection = settings.EventBusConnection;
 
-                return new DefaultServiceBusPersisterConnection(serviceBusConnection);
+                return new DefaultServiceBusPersistentConnection(serviceBusConnection);
             });
         }
         else
@@ -309,7 +311,7 @@ public static class CustomExtensionMethods
         {
             services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
             {
-                var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
+                var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersistentConnection>();
                 var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
                 var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
                 var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();

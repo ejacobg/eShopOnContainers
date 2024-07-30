@@ -13,7 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventBus", "EventBus", "{F0
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBus", "Shared\EventBus\EventBus\EventBus.csproj", "{99BAC978-C418-432F-80B0-F60993F90828}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationEventLog", "Shared\EventBus\IntegrationEventLog\IntegrationEventLog.csproj", "{BE2DE446-8D2F-438A-AA9E-D47716783904}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationEventLog", "Shared\EventBus\IntegrationEventLog\IntegrationEventLog.csproj", "{BE2DE446-8D2F-438A-AA9E-D47716783904}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBus", "Shared\EventBus\ServiceBus\ServiceBus.csproj", "{8285FEFC-FF1B-448E-9BD7-320F21DBCB78}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{BE2DE446-8D2F-438A-AA9E-D47716783904}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE2DE446-8D2F-438A-AA9E-D47716783904}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE2DE446-8D2F-438A-AA9E-D47716783904}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8285FEFC-FF1B-448E-9BD7-320F21DBCB78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8285FEFC-FF1B-448E-9BD7-320F21DBCB78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8285FEFC-FF1B-448E-9BD7-320F21DBCB78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8285FEFC-FF1B-448E-9BD7-320F21DBCB78}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -42,6 +48,7 @@ Global
 		{F06B42C7-2576-4E69-81D1-93E46FAE63A7} = {31113F32-5AF2-4789-A814-209A7E85F460}
 		{99BAC978-C418-432F-80B0-F60993F90828} = {F06B42C7-2576-4E69-81D1-93E46FAE63A7}
 		{BE2DE446-8D2F-438A-AA9E-D47716783904} = {F06B42C7-2576-4E69-81D1-93E46FAE63A7}
+		{8285FEFC-FF1B-448E-9BD7-320F21DBCB78} = {F06B42C7-2576-4E69-81D1-93E46FAE63A7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4B977923-5BCF-4DF1-B9F5-FFDCB829413A}
