@@ -1,6 +1,7 @@
 ﻿using System.Data.Common;
 using System.Reflection;
 
+using Catalog.Api.Filters;
 using Catalog.Api.Grpc;
 using Catalog.Api.Infrastructure;
 using Catalog.Api.IntegrationEvents;

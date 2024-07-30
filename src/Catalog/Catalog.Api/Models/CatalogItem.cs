@@ -1,4 +1,5 @@
-﻿using Catalog.Api.Models.Configurations;
+﻿using Catalog.Api.Exceptions;
+using Catalog.Api.Models.Configurations;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -56,12 +57,16 @@ public class CatalogItem
     {
         if (AvailableStock == 0)
         {
-            throw new InvalidOperationException($"Empty stock, product item {Name} is sold out.");
+            throw new CatalogDomainException(
+                $"Empty stock, product item {Name} is sold out.",
+                new InvalidOperationException());
         }
 
         if (quantityDesired <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(quantityDesired), "Item units desired should be less than zero.");
+            throw new CatalogDomainException(
+                $"{nameof(quantityDesired)}: Item units desired should be less than zero.",
+                new ArgumentOutOfRangeException(nameof(quantityDesired)));
         }
 
         int removed = Math.Min(quantityDesired, AvailableStock);
