@@ -1,6 +1,8 @@
 ﻿using System.Data.Common;
 using System.Reflection;
 
+using Azure.Storage.Blobs;
+
 using Catalog.Api.Filters;
 using Catalog.Api.Grpc;
 using Catalog.Api.Infrastructure;
@@ -9,6 +11,7 @@ using Catalog.Api.IntegrationEvents.Events;
 using Catalog.Api.IntegrationEvents.Handlers;
 
 using EventBus;
+using EventBus.SubscriptionsManager;
 
 using HealthChecks.UI.Client;
 
@@ -22,6 +25,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
+using RabbitMQ;
 using RabbitMQ.Client;
 
 using ServiceBus;
@@ -152,15 +156,15 @@ public static class CustomExtensionMethods
             .AddSqlServer(
                 configuration["ConnectionString"],
                 name: "CatalogDB-check",
-                tags: new string[] { "catalogdb" });
+                tags: ["catalogdb"]);
 
         if (!string.IsNullOrEmpty(accountName) && !string.IsNullOrEmpty(accountKey))
         {
             hcBuilder
                 .AddAzureBlobStorage(
-                    $"DefaultEndpointsProtocol=https;AccountName={accountName};AccountKey={accountKey};EndpointSuffix=core.windows.net",
+                    _ => new BlobServiceClient($"DefaultEndpointsProtocol=https;AccountName={accountName};AccountKey={accountKey};EndpointSuffix=core.windows.net"),
                     name: "catalog-storage-check",
-                    tags: new string[] { "catalogstorage" });
+                    tags: ["catalogstorage"]);
         }
 
         if (configuration.GetValue<bool>("AzureServiceBusEnabled"))
@@ -170,7 +174,7 @@ public static class CustomExtensionMethods
                     configuration["EventBusConnection"],
                     topicName: "eshop_event_bus",
                     name: "catalog-servicebus-check",
-                    tags: new string[] { "servicebus" });
+                    tags: ["servicebus"]);
         }
         else
         {
@@ -178,7 +182,7 @@ public static class CustomExtensionMethods
                 .AddRabbitMQ(
                     $"amqp://{configuration["EventBusConnection"]}",
                     name: "catalog-rabbitmqbus-check",
-                    tags: new string[] { "rabbitmqbus" });
+                    tags: ["rabbitmqbus"]);
         }
 
         return services;
@@ -236,7 +240,7 @@ public static class CustomExtensionMethods
         return services;
     }
 
-    public static IServiceCollection AddSwagger(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddSwagger(this IServiceCollection services, IConfiguration _)
     {
         services.AddSwaggerGen(options =>
         {
@@ -312,13 +316,13 @@ public static class CustomExtensionMethods
             services.AddSingleton<IEventBus, EventBusServiceBus>(sp =>
             {
                 var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersistentConnection>();
-                var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+                var scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
                 var logger = sp.GetRequiredService<ILogger<EventBusServiceBus>>();
                 var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
                 string subscriptionName = configuration["SubscriptionClientName"];
 
                 return new EventBusServiceBus(serviceBusPersisterConnection, logger,
-                    eventBusSubcriptionsManager, iLifetimeScope, subscriptionName);
+                    eventBusSubcriptionsManager, scopeFactory, subscriptionName);
             });
 
         }
@@ -328,7 +332,7 @@ public static class CustomExtensionMethods
             {
                 var subscriptionClientName = configuration["SubscriptionClientName"];
                 var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMQPersistentConnection>();
-                var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+                var scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
                 var logger = sp.GetRequiredService<ILogger<EventBusRabbitMQ>>();
                 var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
 
@@ -338,7 +342,7 @@ public static class CustomExtensionMethods
                     retryCount = int.Parse(configuration["EventBusRetryCount"]);
                 }
 
-                return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
+                return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, scopeFactory, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
             });
         }
 

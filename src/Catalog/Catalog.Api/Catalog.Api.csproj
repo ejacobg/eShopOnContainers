@@ -31,6 +31,7 @@
     <ProjectReference Include="..\..\Shared\EventBus\EventBus\EventBus.csproj" />
     <ProjectReference Include="..\..\Shared\EventBus\IntegrationEventLog\IntegrationEventLog.csproj" />
     <ProjectReference Include="..\..\Shared\EventBus\ServiceBus\ServiceBus.csproj" />
+    <ProjectReference Include="..\..\Shared\EventBus\RabbitMQ\RabbitMQ.csproj" />
   </ItemGroup>
 
   <ItemGroup>
