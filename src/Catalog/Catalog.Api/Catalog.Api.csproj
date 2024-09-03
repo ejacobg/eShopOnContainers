@@ -6,6 +6,57 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <!-- Copied from original project, with minor changes. -->
+  <PropertyGroup>
+    <DebugType>portable</DebugType>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+    <AssemblyName>Catalog.Api</AssemblyName>
+    <PackageId>Catalog.Api</PackageId>
+
+    <!-- dotnet user-secrets init -->
+    <UserSecretsId>a9aa0041-b6b3-4ba8-994b-050cf0c38d4c</UserSecretsId>
+
+    <!-- TODO: Add Docker Compose and update this path. -->
+    <DockerComposeProjectPath>..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
+    <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
+    <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot;">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+
+    <!-- TODO: Add Pics directory?-->
+    <Content Include="Pics\**\*;">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <None Update="Pics\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    
+    <!-- What's the difference between \**\* and \*?-->
+    <Content Include="Setup\**\*;">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <None Update="Setup\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    
+    <Content Update="web.config;">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    
+    <!-- TODO: Remove? Are these needed? -->
+    <!-- I assume these are build artifacts created at some point? -->
+    <!-- <Content Remove="Setup\Catalogitems - Copy.zip" /> -->
+    <!-- <None Remove="Setup\Catalogitems - Copy.zip" /> -->
+    <!-- <Compile Include="IntegrationEvents\EventHandling\AnyFutureIntegrationEventHandler.cs.txt" /> -->
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.Azure.Storage.Blobs" Version="8.0.1" />
     <PackageReference Include="AspNetCore.HealthChecks.AzureServiceBus" Version="8.0.1" />
