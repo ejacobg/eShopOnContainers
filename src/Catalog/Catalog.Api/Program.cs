@@ -20,10 +20,10 @@ Log.Logger = CreateSerilogLogger(configuration);
 
 try
 {
-    Log.Information("Configuring web host ({ApplicationContext})...", Program.AppName);
-    var host = CreateHostBuilder(configuration, args);
+    Log.Information("Configuring web host ({ApplicationContext})...", AppName);
+    var host = CreateHost(configuration, args);
 
-    Log.Information("Applying migrations ({ApplicationContext})...", Program.AppName);
+    Log.Information("Applying migrations ({ApplicationContext})...", AppName);
     host.MigrateDbContext<CatalogContext>((context, services) =>
     {
         var env = services.GetService<IWebHostEnvironment>();
@@ -34,14 +34,19 @@ try
     })
     .MigrateDbContext<IntegrationEventLogContext>((_, __) => { });
 
-    Log.Information("Starting web host ({ApplicationContext})...", Program.AppName);
+    Log.Information("Starting web host ({ApplicationContext})...", AppName);
     host.Run();
 
     return 0;
 }
+catch (HostAbortedException ex) when (ex.Source == "Microsoft.EntityFrameworkCore.Design") // see https://github.com/dotnet/efcore/issues/29809
+{
+    Log.Information("Host aborted by EF Core tools ({ApplicationContext}).", AppName);
+    return 0;
+}
 catch (Exception ex)
 {
-    Log.Fatal(ex, "Program terminated unexpectedly ({ApplicationContext})!", Program.AppName);
+    Log.Fatal(ex, "Program terminated unexpectedly ({ApplicationContext})!", AppName);
     return 1;
 }
 finally
@@ -49,11 +54,15 @@ finally
     Log.CloseAndFlush();
 }
 
-IWebHost CreateHostBuilder(IConfiguration configuration, string[] args)
+IHost CreateHost(IConfiguration configuration, string[] args)
 {
-    var builder = WebApplication.CreateBuilder(args);
-    builder.Services.AddSerilog();
-    return builder.WebHost
+    var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+    {
+        Args = args,
+        ContentRootPath = Directory.GetCurrentDirectory(),
+        WebRootPath = "Pics"
+    });
+    builder.WebHost
         .UseConfiguration(configuration)
         .CaptureStartupErrors(false)
         .ConfigureKestrel(options =>
@@ -67,12 +76,18 @@ IWebHost CreateHostBuilder(IConfiguration configuration, string[] args)
             {
                 listenOptions.Protocols = HttpProtocols.Http2;
             });
+        });
 
-        })
-        .UseStartup<Startup>()
-        .UseContentRoot(Directory.GetCurrentDirectory())
-        .UseWebRoot("Pics")
-        .Build();
+    var startup = new Startup(configuration);
+
+    startup.ConfigureServices(builder.Services);
+    
+    var app = builder.Build();
+
+    var loggerFactory = app.Services.GetRequiredService<ILoggerFactory>();
+    startup.Configure(app, app.Environment, loggerFactory);
+
+    return app;
 }
 
 Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
@@ -81,7 +96,7 @@ Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
     var logstashUrl = configuration["Serilog:LogstashgUrl"];
     return new LoggerConfiguration()
         .MinimumLevel.Verbose()
-        .Enrich.WithProperty("ApplicationContext", Program.AppName)
+        .Enrich.WithProperty("ApplicationContext", AppName)
         .Enrich.FromLogContext()
         .WriteTo.Console()
         .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)

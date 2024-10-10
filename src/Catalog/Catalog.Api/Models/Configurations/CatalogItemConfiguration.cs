@@ -7,7 +7,7 @@ public class CatalogItemConfiguration : IEntityTypeConfiguration<CatalogItem>
 {
     public void Configure(EntityTypeBuilder<CatalogItem> builder)
     {
-        builder.ToTable("Catalog");
+        builder.ToTable("CatalogItem");
 
         builder.Property(ci => ci.Id)
             .UseHiLo("catalog_hilo")
@@ -18,7 +18,8 @@ public class CatalogItemConfiguration : IEntityTypeConfiguration<CatalogItem>
             .HasMaxLength(50);
 
         builder.Property(ci => ci.Price)
-            .IsRequired();
+            .IsRequired()
+            .HasPrecision(18, 2);
 
         builder.Property(ci => ci.PictureFileName)
             .IsRequired(false);

@@ -28,6 +28,8 @@ using Microsoft.OpenApi.Models;
 using RabbitMQ;
 using RabbitMQ.Client;
 
+using Serilog;
+
 using ServiceBus;
 
 namespace Catalog.Api;
@@ -46,7 +48,8 @@ public class Startup(IConfiguration configuration)
             .AddIntegrationServices(Configuration)
             .AddEventBus(Configuration)
             .AddSwagger(Configuration)
-            .AddCustomHealthCheck(Configuration);
+            .AddCustomHealthCheck(Configuration)
+            .AddSerilog();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
@@ -190,28 +193,46 @@ public static class CustomExtensionMethods
 
     public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddEntityFrameworkSqlServer()
-            .AddDbContext<CatalogContext>(options =>
-            {
-                options.UseSqlServer(configuration["ConnectionString"],
-                                        sqlServerOptionsAction: sqlOptions =>
-                                        {
-                                            sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                                            //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
-                                            sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
-                                        });
-            });
+        // > It is much more likely you need to call SqlServerServiceCollectionExtensions.AddSqlServer().
+        //services.AddEntityFrameworkSqlServer();
 
-        services.AddDbContext<IntegrationEventLogContext>(options =>
-        {
-            options.UseSqlServer(configuration["ConnectionString"],
-                                    sqlServerOptionsAction: sqlOptions =>
-                                    {
-                                        sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                                        //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
-                                        sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
-                                    });
-        });
+        //services.AddSqlServer<CatalogContext>(
+        //    configuration["ConnectionString"],
+        //    sqlOptions =>
+        //    {
+        //        sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+        //        //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
+        //        sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+        //    });
+
+        //services.AddSqlServer<IntegrationEventLogContext>(
+        //    configuration["ConnectionString"],
+        //    sqlOptions =>
+        //    {
+        //        sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+        //        //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
+        //        sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+        //    });
+
+        services.AddDbContext<CatalogContext>(
+            options => options.UseSqlServer(
+                configuration["ConnectionString"],
+                sqlOptions =>
+                {
+                    sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                    //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
+                    sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                }));
+
+        services.AddDbContext<IntegrationEventLogContext>(
+            options => options.UseSqlServer(
+                configuration["ConnectionString"],
+                sqlOptions =>
+                {
+                    sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                    //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency 
+                    sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                }));
 
         return services;
     }

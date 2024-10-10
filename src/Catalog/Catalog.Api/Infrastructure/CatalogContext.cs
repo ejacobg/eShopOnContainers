@@ -1,7 +1,6 @@
 ﻿using Catalog.Api.Models;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 
 namespace Catalog.Api.Infrastructure;
 
@@ -20,17 +19,5 @@ public class CatalogContext(DbContextOptions<CatalogContext> options) : DbContex
         // builder.Entity<CatalogBrand>();
         // builder.Entity<CatalogItem>();
         // builder.Entity<CatalogType>();
-    }
-}
-
-public class CatalogContextDesignFactory : IDesignTimeDbContextFactory<CatalogContext>
-{
-    public CatalogContext CreateDbContext(string[] args)
-    {
-        // dotnet add package Microsoft.EntityFrameworkCore.SqlServer
-        var optionsBuilder = new DbContextOptionsBuilder<CatalogContext>()
-            .UseSqlServer("Server=.;Initial Catalog=Microsoft.eShopOnContainers.Services.CatalogDb;Integrated Security=true");
-
-        return new CatalogContext(optionsBuilder.Options);
     }
 }

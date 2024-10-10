@@ -5,16 +5,16 @@ using Polly;
 
 namespace Catalog.Api.Extensions;
 
-public static class WebHostExtensions
+public static class GenericHostExtensions
 {
-    public static bool IsInKubernetes(this IWebHost host)
+    public static bool IsInKubernetes(this IHost host)
     {
         var cfg = host.Services.GetService<IConfiguration>();
         var orchestratorType = cfg.GetValue<string>("OrchestratorType");
         return orchestratorType?.ToUpper() == "K8S";
     }
 
-    public static IWebHost MigrateDbContext<TContext>(this IWebHost host, Action<TContext, IServiceProvider> seeder) where TContext : DbContext
+    public static IHost MigrateDbContext<TContext>(this IHost host, Action<TContext, IServiceProvider> seeder) where TContext : DbContext
     {
         var underK8s = host.IsInKubernetes();
 
