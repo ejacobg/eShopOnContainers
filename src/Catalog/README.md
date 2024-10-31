@@ -28,4 +28,4 @@ Refactoring ideas:
 - [ ] Move integration events to a better location.
 - [x] Use [`StatusCodes`](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.http.statuscodes?view=aspnetcore-8.0) instead of [`HttpStatusCode`](https://learn.microsoft.com/en-us/dotnet/api/system.net.httpstatuscode?view=net-8.0).
 - [x] Remove usage of [LinqSelectExtensions](https://github.com/dotnet-architecture/eShopOnContainers/blob/8438a6a652ce7db4e271e7cd47071fc4d58fdb8c/src/Services/Catalog/Catalog.API/Extensions/LinqSelectExtensions.cs).
-- [ ] 
+- [ ] Use proper DTO/request types inside the Catalog controller.

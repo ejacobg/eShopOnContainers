@@ -263,6 +263,7 @@ public class CatalogController : ControllerBase
     {
         // We make a copy here to allow EF core to generate the new ID, as well as to protect ourselves in case other pieces of code touch the `product` item after us.
         // Adding an entity to the context automatically enables tracking; by creating our own private copy here, we can ensure that only this code has access to the entity.
+        // It probably makes more sense to use a DTO (eg. CreateCatalogItemRequest) rather than having the user write into our model. The API still shows fields that aren't being used like Id, CatalogBrand, and AvailableStock.
         var item = new CatalogItem
         {
             CatalogBrandId = product.CatalogBrandId,
