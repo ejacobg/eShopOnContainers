@@ -114,9 +114,12 @@ Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
 
 IConfiguration GetConfiguration()
 {
+    var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+
     var builder = new ConfigurationBuilder()
         .SetBasePath(Directory.GetCurrentDirectory())
         .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+        .AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true)
         .AddEnvironmentVariables();
 
     var config = builder.Build();

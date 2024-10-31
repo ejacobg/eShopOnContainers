@@ -240,6 +240,10 @@ public static class CustomExtensionMethods
     public static IServiceCollection AddCustomOptions(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<CatalogSettings>(configuration);
+        services.PostConfigure<CatalogSettings>(settings =>
+        {
+            settings.PicBaseUrl = $"http://localhost:{configuration.GetValue("PORT", 80)}/{configuration.GetValue<string>("PicBaseUrlRoute")}";
+        });
         services.Configure<ApiBehaviorOptions>(options =>
         {
             options.InvalidModelStateResponseFactory = context =>
@@ -306,6 +310,8 @@ public static class CustomExtensionMethods
                     HostName = configuration["EventBusConnection"],
                     DispatchConsumersAsync = true
                 };
+
+                // The default username/password is guest/guest, so you don't have to set these if you're going to use the defaults.
 
                 if (!string.IsNullOrEmpty(configuration["EventBusUserName"]))
                 {

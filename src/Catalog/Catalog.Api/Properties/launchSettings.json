@@ -1,40 +1,14 @@
 ﻿{
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:57424/",
-      "sslPort": 0
-    }
-  },
   "profiles": {
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "launchUrl": "/swagger",
-      "environmentVariables": {
-        // TODO: verify the connection string
-        "ConnectionString": "server=localhost,5433;Database=Microsoft.eShopOnContainers.Services.CatalogDb;User Id=sa;Password=Pass@word",
-        "Serilog:LogstashgUrl": "http://locahost:8080",
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "EventBusConnection": "localhost",
-        "Serilog:SeqServerUrl": "http://locahost:5340"
-      }
-    },
-    "Microsoft.eShopOnContainers.Services.Catalog.API": {
+    "Catalog.Api": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:55101/",
+      "applicationUrl": "http://localhost:5001",
+      "launchUrl": "http://localhost:5001/",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "PORT": "5001"
       }
-    },
-    "Azure Dev Spaces": {
-      "commandName": "AzureDevSpaces",
-      "launchBrowser": true,
-      "resourceGroup": "edu-devspaces3",
-      "aksName": "edu-devspaces3",
-      "subscriptionId": "e3035ac1-c06c-4daf-8939-57b3c5f1f759"
     }
   }
 }
