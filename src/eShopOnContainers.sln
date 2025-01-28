@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBus", "Shared\EventB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQ", "Shared\EventBus\RabbitMQ\RabbitMQ.csproj", "{854C223A-4801-4F7F-BE8B-208D3DF9FEC0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Basket", "Basket", "{6FF6600C-51F3-4929-9C7D-D9B8B8BA1DF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Basket.Api", "Basket\Basket.Api\Basket.Api.csproj", "{7DC3D57A-158D-496E-B0B6-43249C094499}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,10 @@ Global
 		{854C223A-4801-4F7F-BE8B-208D3DF9FEC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{854C223A-4801-4F7F-BE8B-208D3DF9FEC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{854C223A-4801-4F7F-BE8B-208D3DF9FEC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DC3D57A-158D-496E-B0B6-43249C094499}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DC3D57A-158D-496E-B0B6-43249C094499}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DC3D57A-158D-496E-B0B6-43249C094499}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DC3D57A-158D-496E-B0B6-43249C094499}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,6 +64,7 @@ Global
 		{BE2DE446-8D2F-438A-AA9E-D47716783904} = {F06B42C7-2576-4E69-81D1-93E46FAE63A7}
 		{8285FEFC-FF1B-448E-9BD7-320F21DBCB78} = {F06B42C7-2576-4E69-81D1-93E46FAE63A7}
 		{854C223A-4801-4F7F-BE8B-208D3DF9FEC0} = {F06B42C7-2576-4E69-81D1-93E46FAE63A7}
+		{7DC3D57A-158D-496E-B0B6-43249C094499} = {6FF6600C-51F3-4929-9C7D-D9B8B8BA1DF1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4B977923-5BCF-4DF1-B9F5-FFDCB829413A}
