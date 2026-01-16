@@ -13,3 +13,56 @@
 ## Notes
 
 Features a Redis cache for storing basket data.
+
+Search for `// TODO` for to-do items.
+
+Search for `// ?` for questions that you should probably answer (and leave notes).
+
+Refactoring ideas/to-do:
+
+- [ ] Re-format all files.
+
+## Progress
+
+- [ ] Auth/
+	- [ ] Client/
+	- [ ] Server/
+- [ ] Controllers/
+	- [ ] Basket Controller
+	- [ ] Home Controller
+- [ ] Grpc/
+	- [ ] Basket Service
+- [ ] Infrastructure/
+	- [x] Action Results
+	- [x] Exceptions
+		- [x] FailingMiddlewareAppBuilderExtensions
+			- Renamed to ApplicationBuilderExtensions and moved under Middleware.
+	- [x] Filters
+	- [x] Middleware
+	- [x] Repositories
+- [x] Model/
+	- [x] BasketCheckout
+	- [x] BasketItem
+	- [x] CustomerBasket
+	- [x] IBasketRepository
+- [x] Proto/
+	- [x] basket.proto
+- [x] Services/
+	- [x] IdentityService
+	- [x] IIdentityService
+- [x] appsettings.json
+	- [x] appsettings.Development.json
+- [x] BasketSettings.cs
+- [x] CustomExtensionMethods.cs
+	- Renamed to ServiceCollectionExtensions.cs.
+	- [x] Resolve missing imports
+- [ ] Program.cs
+- [ ] Startup.cs
+	- [ ] Implement missing classes
+	- [ ] Resolve missing imports
+	- [ ] Possibly refactor
+- [ ] TestHttpResponseTrailersFeature.cs
+- [ ] Dockerfile
+- [ ] Basket.API.csproj
+	- Renamed to Basket.Api.csproj.
+	- [ ] Double-check all imports.

@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Catalog", "Catalog", "{81870A3D-B665-498B-B7C5-99D6DCF70B48}"
+	ProjectSection(SolutionItems) = preProject
+		Catalog\README.md = Catalog\README.md
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.Api", "Catalog\Catalog.Api\Catalog.Api.csproj", "{1E4298CE-565A-4AD4-8F0E-AD4D996F5873}"
 EndProject
@@ -20,6 +23,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQ", "Shared\EventBus\RabbitMQ\RabbitMQ.csproj", "{854C223A-4801-4F7F-BE8B-208D3DF9FEC0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Basket", "Basket", "{6FF6600C-51F3-4929-9C7D-D9B8B8BA1DF1}"
+	ProjectSection(SolutionItems) = preProject
+		Basket\README.md = Basket\README.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Basket.Api", "Basket\Basket.Api\Basket.Api.csproj", "{7DC3D57A-158D-496E-B0B6-43249C094499}"
 EndProject

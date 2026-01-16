@@ -30,3 +30,4 @@ Refactoring ideas:
 - [x] Remove usage of [LinqSelectExtensions](https://github.com/dotnet-architecture/eShopOnContainers/blob/8438a6a652ce7db4e271e7cd47071fc4d58fdb8c/src/Services/Catalog/Catalog.API/Extensions/LinqSelectExtensions.cs).
 - [ ] Use proper DTO/request types inside the Catalog controller.
 - [ ] Make sure all endpoints work.
+- [ ] Make a quick little diagram showing how this works.
