@@ -1,2 +1,8 @@
 <Solution>
+  <Folder Name="/Catalog/">
+    <Project Path="Catalog/Catalog.Api/Catalog.Api.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="Catalog/Catalog.md" />
+  </Folder>
 </Solution>
