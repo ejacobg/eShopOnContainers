@@ -15,3 +15,7 @@ The core of this project will be based on the eShopOnContainers [6.0.0 release](
 [eShopOnContainers: A reference application for .NET and microservices deployed using containers](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/multi-container-microservice-net-applications/microservice-application-design#eshoponcontainers-a-reference-application-for-net-and-microservices-deployed-using-containers)
 
 [Everything wrong with eShopOnContainers](https://medium.com/@iamprovidence/everything-wrong-with-eshoponcontainers-ce9319a7a601)
+
+## Update 2026-01-15
+
+It's been a while since I last worked on this repo, so I'm gonna try my hand at this again. It's been long enough for .NET 10 to come out, so it's a good a time as ever to try and re-implement this. All work done before this point has been archived to a dedicated `net8/` directory which will no longer be maintained. Moving forward, the `net10/` directory will contain my current progress.
