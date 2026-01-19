@@ -9,7 +9,7 @@ namespace Catalog.Api.Entities;
 [EntityTypeConfiguration(typeof(CatalogBrandConfiguration))]
 public class CatalogBrand
 {
-    public required int Id { get; set; }
+    public int Id { get; set; }
 
     [MaxLength(100)]
     public required string Brand { get; set; }

@@ -11,7 +11,7 @@ namespace Catalog.Api.Entities;
 [EntityTypeConfiguration(typeof(CatalogItemConfiguration))]
 public class CatalogItem
 {
-    public required int Id { get; set; }
+    public int Id { get; set; }
 
     [MaxLength(50)]
     public required string Name { get; set; }
@@ -27,11 +27,11 @@ public class CatalogItem
 
     public required int CatalogTypeId { get; set; }
 
-    public required CatalogType CatalogType { get; set; }
+    public CatalogType? CatalogType { get; set; } // Or use non-null with CatalogType = null! (?)
 
     public required int CatalogBrandId { get; set; }
 
-    public required CatalogBrand CatalogBrand { get; set; }
+    public CatalogBrand? CatalogBrand { get; set; }
 
     // Quantity in stock
     public required int AvailableStock { get; set; }

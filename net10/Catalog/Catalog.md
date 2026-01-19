@@ -10,6 +10,8 @@ Will be using the minimal hosting model instead of a `Startup` class like the or
 
 Added some data annotations for clarity when looking at the classes, but in practice they're redundant since they are applied by the `IEntityTypeConfiguration` classes. 
 
+I'd normally make all fields `required`, but I'm having trouble enforcing this. I'm gonna stick with non-required fields only for those managed by the framework (namely PKs and navigation properties). See also [Working with Nullable Reference Types](https://learn.microsoft.com/en-us/ef/core/miscellaneous/nullable-reference-types).
+
 ### CatalogBrand
 
 Just an ID and name.

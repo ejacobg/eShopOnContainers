@@ -7,7 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddDbContext<CatalogContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("LocalDb") ?? throw new InvalidOperationException("LocalDb connection string not found")));
+{
+    options
+        .UseSqlServer(builder.Configuration.GetConnectionString("LocalDb") ?? throw new InvalidOperationException("LocalDb connection string not found"))
+        .UseAsyncSeeding(CatalogContextSeeder.Seed);
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
