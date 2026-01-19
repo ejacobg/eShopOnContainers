@@ -6,7 +6,7 @@ namespace Catalog.Api.Data;
 
 public static class CatalogContextSeeder
 {
-    public static async Task Seed(DbContext dbContext, bool _, CancellationToken cancellationToken)
+    public static async Task SeedAsync(DbContext dbContext, bool _, CancellationToken cancellationToken)
     {
         if (!dbContext.Set<CatalogBrand>().Any())
         {

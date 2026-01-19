@@ -33,3 +33,8 @@ Provides methods for adding to/removing from the stock.
 ## Data
 
 Omitting the `CatalogContextDesignFactory` for now. Will add it back later on if/when it's actually needed.
+
+I saw one example using `MultipleActiveResultSets=true` on the connection string, but in this case it starts to throw warnings when applying migrations.
+> Savepoints are disabled because Multiple Active Result Sets (MARS) is enabled. If 'SaveChanges' fails, then the transaction cannot be automatically rolled back to a known clean state. Instead, the transaction should be rolled back by the application before retrying 'SaveChanges'. See https://go.microsoft.com/fwlink/?linkid=2149338 for more information and examples. To identify the code which triggers this warning, call 'ConfigureWarnings(w => w.Throw(SqlServerEventId.SavepointsDisabledBecauseOfMARS))'.
+
+I'm going to remove MARS for now, especially since it wasn't present in the original implementation.

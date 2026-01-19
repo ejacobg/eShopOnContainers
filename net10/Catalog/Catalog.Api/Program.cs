@@ -10,7 +10,8 @@ builder.Services.AddDbContext<CatalogContext>(options =>
 {
     options
         .UseSqlServer(builder.Configuration.GetConnectionString("LocalDb") ?? throw new InvalidOperationException("LocalDb connection string not found"))
-        .UseAsyncSeeding(CatalogContextSeeder.Seed);
+        .UseSeeding((dbContext, smOp) => CatalogContextSeeder.SeedAsync(dbContext, smOp, CancellationToken.None).GetAwaiter().GetResult())
+        .UseAsyncSeeding(CatalogContextSeeder.SeedAsync);
 });
 
 builder.Services.AddControllers();
