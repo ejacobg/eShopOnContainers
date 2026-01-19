@@ -1,11 +1,19 @@
-﻿using Catalog.Api.Exceptions;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+using Catalog.Api.Entities.Configurations;
+using Catalog.Api.Exceptions;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Api.Entities;
 
+[EntityTypeConfiguration(typeof(CatalogItemConfiguration))]
 public class CatalogItem
 {
     public required int Id { get; set; }
 
+    [MaxLength(50)]
     public required string Name { get; set; }
 
     public required string? Description { get; set; }
@@ -14,6 +22,7 @@ public class CatalogItem
 
     public required string? PictureFileName { get; set; }
 
+    [NotMapped]
     public required string? PictureUri { get; set; }
 
     public required int CatalogTypeId { get; set; }
