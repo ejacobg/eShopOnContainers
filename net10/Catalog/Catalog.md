@@ -38,3 +38,17 @@ I saw one example using `MultipleActiveResultSets=true` on the connection string
 > Savepoints are disabled because Multiple Active Result Sets (MARS) is enabled. If 'SaveChanges' fails, then the transaction cannot be automatically rolled back to a known clean state. Instead, the transaction should be rolled back by the application before retrying 'SaveChanges'. See https://go.microsoft.com/fwlink/?linkid=2149338 for more information and examples. To identify the code which triggers this warning, call 'ConfigureWarnings(w => w.Throw(SqlServerEventId.SavepointsDisabledBecauseOfMARS))'.
 
 I'm going to remove MARS for now, especially since it wasn't present in the original implementation.
+
+## Controllers
+
+Swagger currently isn't set up right now. Going straight to the endpoints works, but all other routes will end up 404-ing.
+
+### Catalog
+
+```http
+###
+GET api/v1/[controller]/items[?pageSize=3&pageIndex=10]
+
+###
+GET api/v1/[controller]/items[?ids=1,2,3,...]
+```
