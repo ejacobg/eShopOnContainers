@@ -1,7 +1,9 @@
 ﻿using Catalog.Api.Data;
 using Catalog.Api.Entities;
+using Catalog.Api.Extensions;
 using Catalog.Api.Responses;
 
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -26,12 +28,13 @@ public class CatalogController : ControllerBase
     // GET api/v1/[controller]/items[?pageSize=3&pageIndex=10] => paginated response
     // OR
     // GET api/v1/[controller]/items[?ids=1,2,3,...] => IEnumerable
-    // Not sure if I agree having the same action serve basically 2 different endpoints, but sticking with it for simplicity
+    // Not sure if I agree having the same action act as 2 different endpoints, but sticking with it for now since there will be dependency on it
     [HttpGet("items")]
-    [ProducesResponseType(typeof(PaginatedItemsResponse<CatalogItem>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(IEnumerable<CatalogItem>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> ItemsAsync(
+    // Results<T> should make [ProducesResponseType] attributes redundant
+    //[ProducesResponseType(typeof(PaginatedItemsResponse<CatalogItem>), StatusCodes.Status200OK)]
+    //[ProducesResponseType(typeof(IEnumerable<CatalogItem>), StatusCodes.Status200OK)]
+    //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<Results<Ok<PaginatedItemsResponse<CatalogItem>>, Ok<IEnumerable<CatalogItem>>, BadRequest<string>>> ItemsAsync(
         [FromQuery] int pageSize = 10,
         [FromQuery] int pageIndex = 0,
         [FromQuery] string? ids = null)
@@ -42,10 +45,10 @@ public class CatalogController : ControllerBase
 
             if (items.Count == 0)
             {
-                return BadRequest("0 valid ids found. Must be a comma-separated list of integers.");
+                return TypedResults.BadRequest("0 valid ids found. Must be a comma-separated list of integers.");
             }
 
-            return Ok(items);
+            return TypedResults.Ok<IEnumerable<CatalogItem>>(items);
         }
 
         var totalCount = await _catalogContext.CatalogItems.LongCountAsync();
@@ -56,7 +59,7 @@ public class CatalogController : ControllerBase
             .Take(pageSize)
             .ToListAsync();
 
-        return Ok(new PaginatedItemsResponse<CatalogItem>
+        return TypedResults.Ok(new PaginatedItemsResponse<CatalogItem>
         {
             PageIndex = pageIndex,
             PageSize = pageSize,
@@ -82,5 +85,23 @@ public class CatalogController : ControllerBase
         }
 
         return _catalogContext.CatalogItems.Where(ci => idSet.Contains(ci.Id)).ToListAsync();
+    }
+
+    [HttpGet("items/{id:int}")]
+    public async Task<Results<Ok<CatalogItem>, NotFound, BadRequest>> ItemByIdAsync(int id)
+    {
+        if (id <= 0)
+        {
+            return TypedResults.BadRequest();
+        }
+
+        var item = await _catalogContext.CatalogItems.SingleOrDefaultAsync(item => item.Id == id);
+        if (item is null)
+        {
+            return TypedResults.NotFound();
+        }
+
+        item.FillProductUrl(_catalogSettings.PicBaseUrl, _catalogSettings.AzureStorageEnabled);
+        return TypedResults.Ok(item);
     }
 }
